@@ -21,12 +21,14 @@ forecast_horizon = st.sidebar.number_input("Forecast horizon (days)", min_value=
 uploaded = st.sidebar.file_uploader("Or upload CSV (time,value) for forecasting", type=['csv'])
 
 # --- Sidebar buttons ---
+from streamlit.runtime.scriptrunner import rerun
+
 if st.sidebar.button("Load & Forecast Data"):
     st.session_state["run_forecast"] = True
 
 if st.sidebar.button("Clear Results"):
     st.session_state.clear()
-    st.rerun()
+    rerun()
 
 # --- Main logic ---
 if st.session_state.get("run_forecast", False):
@@ -90,3 +92,4 @@ if st.session_state.get("run_forecast", False):
 
 else:
     st.info("Enter location details in the sidebar and click **'Load & Forecast Data'**, or upload a CSV file.")
+
