@@ -33,6 +33,7 @@ if st.sidebar.button("Clear Results"):
 # --- Main logic ---
 if st.session_state.get("run_forecast", False):
     df = pd.DataFrame()
+
     # --- Uploaded CSV ---
     if uploaded is not None:
         try:
@@ -54,6 +55,7 @@ if st.session_state.get("run_forecast", False):
                 st.line_chart(fc_df.set_index('time')['forecast'])
                 st.dataframe(fc_df)
                 st.markdown(download_link(fc_df, f"forecast_{city}.csv"), unsafe_allow_html=True)
+
         except Exception as e:
             st.error(f"Error reading uploaded CSV: {e}")
 
@@ -69,20 +71,21 @@ if st.session_state.get("run_forecast", False):
             st.dataframe(format_df_for_display(df))
 
             # Temperature plot
-            fig = px.line(df, x='time', y='temperature_2m', title='Temperature (°C)')
-            st.plotly_chart(fig, use_container_width=True)
+            if 'temperature_2m' in df.columns:
+                fig = px.line(df, x='time', y='temperature_2m', title='Temperature (°C)')
+                st.plotly_chart(fig, use_container_width=True)
 
-            # Forecast
-            with st.spinner("Training ARIMA Forecast..."):
-                try:
-                    fc_df, summary = arima_forecast(df['time'], df['temperature_2m'], int(forecast_horizon))
-                    st.subheader("🔮 Forecast (Temperature °C)")
-                    st.write(summary)
-                    st.line_chart(fc_df.set_index('time')['forecast'])
-                    st.dataframe(fc_df)
-                    st.markdown(download_link(fc_df, f"forecast_{city}.csv"), unsafe_allow_html=True)
-                except Exception as e:
-                    st.error(f"Error during forecast: {e}")
+                # Forecast
+                with st.spinner("Training ARIMA Forecast..."):
+                    try:
+                        fc_df, summary = arima_forecast(df['time'], df['temperature_2m'], int(forecast_horizon))
+                        st.subheader("🔮 Forecast (Temperature °C)")
+                        st.write(summary)
+                        st.line_chart(fc_df.set_index('time')['forecast'])
+                        st.dataframe(fc_df)
+                        st.markdown(download_link(fc_df, f"forecast_{city}.csv"), unsafe_allow_html=True)
+                    except Exception as e:
+                        st.error(f"Error during forecast: {e}")
 
             # Map visualization
             st.subheader("🗺️ Location Map")
@@ -92,4 +95,5 @@ if st.session_state.get("run_forecast", False):
 
 else:
     st.info("Enter location details in the sidebar and click **'Load & Forecast Data'**, or upload a CSV file.")
+
 
