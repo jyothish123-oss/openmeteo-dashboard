@@ -1,15 +1,38 @@
-streamlit>=1.50
+# Streamlit web framework
+streamlit>=1.20
+
+# Data processing
 pandas>=2.2
 numpy>=1.26
 scipy>=1.16
-requests>=2.31
-plotly>=6.3
-statsmodels==0.14.5
+python-dateutil>=2.8.2
+pytz>=2025.2
+
+# Forecasting
 pmdarima==2.0.4
+statsmodels>=0.14.5
 scikit-learn>=1.6
-joblib>=1.5
+
+# Visualization
+plotly>=6.3
+matplotlib>=3.10
+altair>=5.5
+
+# Maps
 folium>=0.20
 streamlit-folium>=0.25
-rich>=14.2
-matplotlib>=3.10
-python-dotenv>=1.1
+branca>=0.8
+xyzservices>=2025.4
+
+# Utilities
+requests>=2.32
+python-dotenv>=1.1.1
+joblib>=1.5
+Cython>=3.1
+setuptools>=80.9
+packaging>=24.2
+
+# Optional for better terminal experience
+rich>=14
+
+
